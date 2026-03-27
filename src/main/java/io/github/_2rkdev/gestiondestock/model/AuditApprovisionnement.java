@@ -42,5 +42,4 @@ public class AuditApprovisionnement {
         UPDATE,
         DELETE,
     }
-
 }
