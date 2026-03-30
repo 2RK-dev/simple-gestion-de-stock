@@ -44,16 +44,55 @@ CREATE TRIGGER tr_audit_approvisionnement_insert
     FOR EACH ROW
 EXECUTE FUNCTION audit_appro();
 
-
 CREATE TRIGGER tr_audit_approvisionnement_update
     AFTER UPDATE
     ON approvisionnement
     FOR EACH ROW
 EXECUTE FUNCTION audit_appro();
 
-
 CREATE TRIGGER tr_audit_approvisionnement_delete
     BEFORE DELETE
     ON approvisionnement
     FOR EACH ROW
 EXECUTE FUNCTION audit_appro();
+
+-- Replace ON DELETE CASCADE from FOREIGN KEY constraint by a trigger-based cascade delete
+
+ALTER TABLE approvisionnement
+    DROP CONSTRAINT fk_approvisionnement_produit_id;
+ALTER TABLE approvisionnement
+    ADD CONSTRAINT fk_approvisionnement_produit_id FOREIGN KEY (produit_id) REFERENCES produit (id);
+ALTER TABLE approvisionnement
+    DROP CONSTRAINT fk_approvisionnement_fournisseur_id;
+ALTER TABLE approvisionnement
+    ADD CONSTRAINT fk_approvisionnement_fournisseur_id FOREIGN KEY (fournisseur_id) REFERENCES fournisseur (id);
+
+CREATE FUNCTION cascade_produit_delete() RETURNS TRIGGER
+    LANGUAGE plpgsql AS
+$$
+BEGIN
+    DELETE FROM approvisionnement WHERE approvisionnement.produit_id = OLD.id;
+    RETURN OLD;
+END;
+$$;
+
+CREATE TRIGGER tr_cascade_produit_delete
+    BEFORE DELETE
+    ON produit
+    FOR EACH ROW
+EXECUTE FUNCTION cascade_produit_delete();
+
+CREATE FUNCTION cascade_fournisseur_delete() RETURNS TRIGGER
+    LANGUAGE plpgsql AS
+$$
+BEGIN
+    DELETE FROM approvisionnement WHERE approvisionnement.fournisseur_id = OLD.id;
+    RETURN OLD;
+END;
+$$;
+
+CREATE TRIGGER tr_cascade_fournisseur_delete
+    BEFORE DELETE
+    ON fournisseur
+    FOR EACH ROW
+EXECUTE FUNCTION cascade_fournisseur_delete();
