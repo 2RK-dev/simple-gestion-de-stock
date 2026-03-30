@@ -2,6 +2,7 @@ package io.github._2rkdev.gestiondestock.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,5 +18,6 @@ public class Fournisseur {
     private Long id;
 
     @Column(name = "nom")
+    @Size(min = 2, max = 50, message = "Le nom doit faire entre 2 et 50 caractères")
     private String nom;
 }

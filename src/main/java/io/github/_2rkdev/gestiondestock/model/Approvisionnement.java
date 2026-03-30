@@ -2,6 +2,7 @@ package io.github._2rkdev.gestiondestock.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +25,6 @@ public class Approvisionnement {
     private Produit produit;
 
     @Column(name = "quantite")
+    @Min(value = 1, message = "La quantité doit être supérieure à 0")
     private int quantite;
 }
