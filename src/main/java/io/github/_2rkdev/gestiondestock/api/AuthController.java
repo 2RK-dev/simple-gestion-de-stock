@@ -1,5 +1,6 @@
-package io.github._2rkdev.gestiondestock;
+package io.github._2rkdev.gestiondestock.api;
 
+import io.github._2rkdev.gestiondestock.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package io.github._2rkdev.gestiondestock;
+package io.github._2rkdev.gestiondestock.service;
 
 import io.github._2rkdev.gestiondestock.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

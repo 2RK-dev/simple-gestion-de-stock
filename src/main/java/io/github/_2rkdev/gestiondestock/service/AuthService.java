@@ -1,10 +1,13 @@
-package io.github._2rkdev.gestiondestock;
+package io.github._2rkdev.gestiondestock.service;
 
+import io.github._2rkdev.gestiondestock.api.LoginRequest;
+import io.github._2rkdev.gestiondestock.api.LoginResponse;
 import io.github._2rkdev.gestiondestock.configuration.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -29,7 +32,8 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
         );
         Objects.requireNonNull(authenticated.getPrincipal(), "Authenticated principal must not be null");
-        Jwt jwt = encodeAccessToken((String) authenticated.getPrincipal());
+        UserDetails principal = (UserDetails) authenticated.getPrincipal();
+        Jwt jwt = encodeAccessToken(principal.getUsername());
 
         return new LoginResponse(loginRequest.username(), jwt.getTokenValue());
     }

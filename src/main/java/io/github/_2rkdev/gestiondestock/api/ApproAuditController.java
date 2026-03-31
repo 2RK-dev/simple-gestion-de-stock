@@ -1,4 +1,4 @@
-package io.github._2rkdev.gestiondestock;
+package io.github._2rkdev.gestiondestock.api;
 
 import io.github._2rkdev.gestiondestock.model.AuditApprovisionnement;
 import io.github._2rkdev.gestiondestock.repository.AuditApprovisionnementRepository;
