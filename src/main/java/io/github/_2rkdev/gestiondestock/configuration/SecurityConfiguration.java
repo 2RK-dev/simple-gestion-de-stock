@@ -52,7 +52,8 @@ public class SecurityConfiguration {
                                 "/swagger-ui/**",
                                 "/v3/api-docs*"
                         ).permitAll()
-                        .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/api/appro-audits").hasRole("ADMIN")
+                        .requestMatchers("/api/**").hasRole("USER")
                         .anyRequest().denyAll()
                 )
                 .oauth2ResourceServer(oauth -> oauth
@@ -104,15 +105,10 @@ public class SecurityConfiguration {
 
         return jwt -> {
             Collection<GrantedAuthority> authorities = new ArrayList<>(scopes.convert(jwt));
-            Object rolesClaim = jwt.getClaims().get("roles");
-            if (rolesClaim instanceof Collection<?> roles) {
-                for (Object r : roles) {
-                    if (r != null) {
-                        authorities.add(new SimpleGrantedAuthority("ROLE_" + r));
-                    }
-                }
+            Object roleClaim = jwt.getClaims().get("role");
+            if (roleClaim instanceof String) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + roleClaim));
             }
-
             return new JwtAuthenticationToken(jwt, authorities, jwt.getSubject());
         };
     }

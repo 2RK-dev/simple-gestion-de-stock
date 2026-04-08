@@ -3,11 +3,14 @@ package io.github._2rkdev.gestiondestock.service;
 import io.github._2rkdev.gestiondestock.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NullMarked;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,9 +22,11 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username + " not found."));
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole().name());
         return User.builder()
                 .username(username)
                 .password(user.getPasswordHash())
+                .authorities(List.of(authority))
                 .build();
     }
 }

@@ -13,6 +13,9 @@ spring:
     rest:
       base-path: /api
       detection-strategy: annotated
+  jpa:
+    hibernate:
+      ddl-auto: validate
 server:
   port: ${APP_PORT}
 app:

@@ -21,12 +21,20 @@ public class DataSeeder implements ApplicationRunner {
             User user = new User();
             user.setUsername("admin");
             user.setPasswordHash(passwordEncoder.encode("password"));
+            user.setRole(User.Role.ADMIN);
             userRepository.save(user);
 
             User another = new User();
-            another.setUsername("user");
+            another.setUsername("rabe");
             another.setPasswordHash(passwordEncoder.encode("password"));
+            another.setRole(User.Role.USER);
             userRepository.save(another);
+
+            User secondUser = new User();
+            secondUser.setUsername("rakoto");
+            secondUser.setPasswordHash(passwordEncoder.encode("password"));
+            secondUser.setRole(User.Role.USER);
+            userRepository.save(secondUser);
         }
     }
 }
