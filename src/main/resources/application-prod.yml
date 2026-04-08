@@ -2,3 +2,5 @@ app:
   security:
     cors:
       allowed-origins: ${FRONTEND_URL}
+server:
+  port: ${APP_PORT:${PORT:8080}}
