@@ -46,6 +46,6 @@ jobs:
 
       - name: Build image with bootBuildImage & push to GHCR
         run: |
-          IMAGE="ghcr.io/2rk-dev/simple-gestion-de-stock:${{ steps.ver.outputs.version }}"
-          ./gradlew bootBuildImage --imageName="$IMAGE"
+          IMAGE="ghcr.io/2rk-dev/simple-gestion-de-stock:${{ steps.ver.outputs.version }}" VERSION="${{ steps.ver.outputs.version }}"
+          ./gradlew bootBuildImage --imageName="$IMAGE" -Pversion="$VERSION"
           docker push "$IMAGE"
