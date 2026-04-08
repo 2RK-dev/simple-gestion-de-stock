@@ -1,0 +1,4 @@
+app:
+  security:
+    cors:
+      allowed-origins: ${FRONTEND_URL}
